@@ -15,7 +15,7 @@
           <img src="{{ asset('assets/AdminLTE/dist/img/user2-160x160.jpg') }}" class="img-circle elevation-2" alt="User Image">
         </div>
         <div class="info">
-          <a href="#" class="d-block">Alexander Pierce</a>
+          <a href="#" class="d-block">{{ Auth::user()->name }}</a>
         </div>
       </div>
 
@@ -303,10 +303,10 @@
             </a>
           </li>
           <li class="nav-item">
-            <a href="pages/gallery.html" class="nav-link">
-              <i class="nav-icon far fa-image"></i>
+            <a href="{{ route('logout')}}" class="nav-link">
+                <i class="fas fa-sign-out-alt"></i>
               <p>
-                Gallery
+                Logout
               </p>
             </a>
           </li>

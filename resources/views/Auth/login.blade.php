@@ -19,14 +19,21 @@
   <!-- /.login-logo -->
   <div class="card card-outline card-primary">
     <div class="card-header text-center">
-      <a href="../../index2.html" class="h1"><b>Sistem</b> Service</a>
+      <a href="#" class="h1"><b>Sistem</b> Service</a>
     </div>
     <div class="card-body">
-      <p class="login-box-msg">Login dengan akun anda!</p>
+        @if ($message = Session::get('success'))
+<div class="alert alert-success">
+    <p>{{ $message }}</p>
+</div>
+<!-- Tables -->
+@endif
+      {{-- <p class="login-box-msg">Silahkan login terlebih dahulu!</p> --}}
 
-      <form action="../../index3.html" method="post">
+      <form action="{{ route('postlogin') }}" method="post">
+        @csrf
         <div class="input-group mb-3">
-          <input type="email" class="form-control" placeholder="Email">
+          <input type="email" class="form-control" placeholder="Email" name="email">
           <div class="input-group-append">
             <div class="input-group-text">
               <span class="fas fa-envelope"></span>
@@ -34,7 +41,7 @@
           </div>
         </div>
         <div class="input-group mb-3">
-          <input type="password" class="form-control" placeholder="Password">
+          <input type="password" class="form-control" placeholder="Password" name="password">
           <div class="input-group-append">
             <div class="input-group-text">
               <span class="fas fa-lock"></span>
