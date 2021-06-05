@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Str;
 
 class AdminController extends Controller
 {
@@ -36,7 +37,23 @@ class AdminController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            'name'      => 'required',
+            'email'     => 'required',
+            'password'  => 'required',
+            'level'     => 'required',
+        ]);
+
+        $user = new User;
+        $user->name = $request->get('name');
+        $user->email = $request->get('email');
+        $user->password = bcrypt($request->get('password'));
+        $user->level = $request->get('level');
+        $user->remember_token = Str::random(60);
+        $user->save();
+
+        return redirect()->route('admin.index')
+            ->with('success', 'Admin Berhasil Ditambahkan');;
     }
 
     /**
