@@ -63,7 +63,7 @@
                                     <td>{{ $a->created_at }}</td>
                                     <td>
                                         <a href="" class="btn btn-info"><i class="fas fa-info-circle"></i></a>
-                                        <a href="" class="btn btn-success"><i class="fas fa-edit"></i></a>
+                                        <button type="button" data-toggle="modal" id="updateAdmin" data-target="#modal-edit" class="btn btn-success"><i class="fas fa-edit"></i></button>
                                         <form action="{{ route('admin.destroy', $a->id) }}" method="POST">
                                             @csrf
                                             @method('DELETE')
@@ -78,7 +78,7 @@
                     </div>
                     <!-- /.card-body -->
                 </div>
-                <button type="button" class="btn btn-success" data-toggle="modal" data-target="#modal-default">
+                <button type="button" class="btn btn-success" data-toggle="modal" data-target="#modal-register">
                     <i class="fas fa-plus"></i>&nbsp;Tambahkan Data User Baru</a>
                 </button>
                 {{-- <a href="{{ route('admin.create') }}" class="btn btn-success"><i
@@ -90,7 +90,7 @@
 </section>
 <!-- /.content -->
 </div>
-<div class="modal fade" id="modal-default">
+<div class="modal fade" id="modal-register">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
@@ -101,6 +101,64 @@
             </div>
             <div class="modal-body">
                 <form action="{{ route('admin.store') }}" method="POST" enctype="multipart/form-data">
+                    @csrf
+                    <div class="form-group">
+                        <label for="nama">Nama</label>
+                        <input type="text" class="form-control" name="name" id="name" placeholder="Masukkan nama">
+                    </div>
+                    <div class="form-group">
+                        <label for="email">Email</label>
+                        <input type="email" class="form-control" name="email" id="email" placeholder="Masukkan email">
+                    </div>
+                    <div class="form-group">
+                        <label for="password">Password</label>
+                        <input type="password" class="form-control" name="password" id="password"
+                            placeholder="Masukkan password">
+                    </div>
+                    <div class="form-group">
+                        <label for="level">Level</label>
+                        <select class="form-control" name="level" id="name">
+                            <option selected value="admin">Admin</option>
+                            <option value="teknisi">Teknisi</option>
+                            <option value="kasir">Kasir</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="exampleInputFile">Foto Profil</label>
+                        <div class="input-group">
+                            <div class="custom-file">
+                                <input type="file" class="custom-file-input" id="exampleInputFile">
+                                <label class="custom-file-label" for="exampleInputFile">Upload foto profil</label>
+                            </div>
+                        </div>
+                    </div>
+            </div>
+            <div class="modal-footer justify-content-between">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                <button type="submit" class="btn btn-primary">Submit</button>
+            </div>
+            </form>
+        </div>
+        <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+</div>
+<script type="text/javascript">
+$("#updateAdmin").click(function () {
+     $("#modal-judul").html("ASD");
+});
+</script>
+<div class="modal fade" id="modal-edit">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="modal-judul"></h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form action="" method="POST" enctype="multipart/form-data">
                     @csrf
                     <div class="form-group">
                         <label for="nama">Nama</label>

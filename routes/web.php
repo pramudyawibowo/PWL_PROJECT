@@ -22,8 +22,10 @@ Route::middleware(['auth', 'ceklevel:admin,teknisi,kasir'])->group(function () {
 });
 
 Route::middleware(['auth', 'ceklevel:admin'])->group(function () {
-    Route::resource('admin', AdminController::class);
+    Route::resource('/admin', AdminController::class);
+    Route::resource('/teknisi', TeknisiController::class);
 });
+
 
 Route::middleware(['auth', 'ceklevel:teknisi'])->group(function () {
 });

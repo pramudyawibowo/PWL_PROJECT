@@ -64,7 +64,7 @@
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a href="pages/charts/flot.html" class="nav-link">
+                            <a href="{{ route('teknisi.index') }}" class="nav-link">
                                 <i class="far fa-cog nav-icon"></i>
                                 <p>Teknisi</p>
                             </a>
