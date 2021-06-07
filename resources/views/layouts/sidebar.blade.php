@@ -74,7 +74,7 @@
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a href="pages/charts/uplot.html" class="nav-link">
+                            <a href="{{ route('alluser.index') }}" class="nav-link">
                                 <i class="far fa-users nav-icon"></i>
                                 <p>All User</p>
                             </a>
