@@ -87,7 +87,7 @@ class AdminController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+
     }
 
     /**
@@ -98,6 +98,7 @@ class AdminController extends Controller
      */
     public function destroy($id)
     {
-        //
+        User::find($id)->delete();
+        return redirect()->route('admin.index');
     }
 }
