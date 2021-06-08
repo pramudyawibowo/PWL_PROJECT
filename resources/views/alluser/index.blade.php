@@ -49,22 +49,24 @@
                                     <th>Nama</th>
                                     <th>Email</th>
                                     <th>Level</th>
+                                    <th>Foto</th>
                                     <th>Dibuat</th>
                                     <th>Aksi</th>
                                 </tr>
                             </thead>
                             <tbody>
-                                @foreach ($admin as $a)
+                                @foreach ($alluser as $a)
                                 <tr>
                                     <td>{{ $loop->iteration }}</td>
                                     <td>{{ $a->name }}</td>
                                     <td>{{ $a->email }}</td>
                                     <td>{{ $a->level }}</td>
+                                    <td><img width="100px" src="{{ asset('storage/'.$a->foto) }}"></td>
                                     <td>{{ $a->created_at }}</td>
                                     <td>
                                         <a href="" class="btn btn-info"><i class="fas fa-info-circle"></i></a>
-                                        <a href="" class="btn btn-success"><i class="fas fa-edit"></i></a>
-                                        <form action="{{ route('admin.destroy', $a->id) }}" method="POST">
+                                        <a class="btn btn-success" data-toggle="modal" id="updatealluser" data-target="#modal-edit{{$a->id}}"><i class="fas fa-edit"></i></a>
+                                        <form action="{{ route('alluser.destroy', $a->id) }}" method="POST">
                                             @csrf
                                             @method('DELETE')
                                             <button type="submit" class="btn btn-danger"><i
@@ -72,6 +74,60 @@
                                         </form>
                                     </td>
                                 </tr>
+                                <div class="modal fade" id="modal-edit{{$a->id}}">
+                                    <div class="modal-dialog">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <h4 class="modal-title" id="modal-judul">Edit data {{ $a->name }}</h4>
+                                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                    <span aria-hidden="true">&times;</span>
+                                                </button>
+                                            </div>
+                                            <div class="modal-body">
+                                                <form action="{{ route ('alluser.update', $a->id) }}" method="POST" enctype="multipart/form-data">
+                                                    @csrf
+                                                    @method('PUT')
+                                                    <div class="form-group">
+                                                        <label for="nama">Nama</label>
+                                                        <input type="text" class="form-control" name="name" id="name" value="{{ $a->name }}">
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <label for="email">Email</label>
+                                                        <input type="email" class="form-control" name="email" id="email" value="{{ $a->email }}">
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <label for="password">Password</label>
+                                                        <input type="password" class="form-control" name="password" id="password"
+                                                            placeholder="Masukkan password">
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <label for="level">Level</label>
+                                                        <select class="form-control" name="level" id="name">
+                                                            <option {{ $a->level == 'admin' ? 'selected':'' }} value="admin">Admin</option>
+                                                            <option {{ $a->level == 'teknisi' ? 'selected':'' }} value="teknisi">Teknisi</option>
+                                                            <option {{ $a->level == 'kasir' ? 'selected':'' }} value="kasir">Kasir</option>
+                                                        </select>
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <label for="fotoprofil">Foto Profil</label>
+                                                        <div class="input-group">
+                                                            <div class="custom-file">
+                                                                <input type="file" class="custom-file-input" id="fotoprofil" name="fotoprofil">
+                                                                <label class="custom-file-label" for="fotoprofil">Upload foto profil</label>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                            </div>
+                                            <div class="modal-footer justify-content-between">
+                                                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                                                <button type="submit" class="btn btn-primary">Submit</button>
+                                            </div>
+                                            </form>
+                                        </div>
+                                        <!-- /.modal-content -->
+                                    </div>
+                                    <!-- /.modal-dialog -->
+                                </div>
                                 @endforeach
                             </tbody>
                         </table>
@@ -81,9 +137,6 @@
                 <button type="button" class="btn btn-success" data-toggle="modal" data-target="#modal-default">
                     <i class="fas fa-plus"></i>&nbsp;Tambahkan Data User Baru</a>
                 </button>
-                {{-- <a href="{{ route('admin.create') }}" class="btn btn-success"><i
-                    class="fas fa-plus"></i>&nbsp;Tambahkan Data Admin</a> --}}
-                <!-- /.card -->
             </div>
         </div>
     </div><!-- /.container-fluid -->
@@ -100,7 +153,7 @@
                 </button>
             </div>
             <div class="modal-body">
-                <form action="{{ route('admin.store') }}" method="POST" enctype="multipart/form-data">
+                <form action="{{ route('alluser.store') }}" method="POST" enctype="multipart/form-data">
                     @csrf
                     <div class="form-group">
                         <label for="nama">Nama</label>
@@ -121,7 +174,6 @@
                             <option value="admin">Admin</option>
                             <option value="teknisi">Teknisi</option>
                             <option value="kasir">Kasir</option>
-                            <option selected value="alluser">Alluser</option>
                         </select>
                     </div>
                     <div class="form-group">

@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
+use Illuminate\Support\Facades\Storage;
 
 class KasirController extends Controller
 {
@@ -15,8 +16,8 @@ class KasirController extends Controller
      */
     public function index()
     {
-        $admin = User::where('level', 'kasir')->get();
-        return view('kasir.index', compact('admin'));
+        $kasir = User::where('level', 'kasir')->get();
+        return view('kasir.index', compact('kasir'));
     }
 
     /**
@@ -44,13 +45,20 @@ class KasirController extends Controller
             'level'     => 'required',
         ]);
 
-        $user = new User;
-        $user->name = $request->get('name');
-        $user->email = $request->get('email');
-        $user->password = bcrypt($request->get('password'));
-        $user->level = $request->get('level');
-        $user->remember_token = Str::random(60);
-        $user->save();
+        if($request->file('fotoprofil')){
+            $image_name = $request->file('fotoprofil')->store('images/user_profile', 'public');
+        } else {
+            $image_name = 'images/user_profile/user.png';
+        }
+
+        $kasir = new User;
+        $kasir->name = $request->get('name');
+        $kasir->email = $request->get('email');
+        $kasir->password = bcrypt($request->get('password'));
+        $kasir->level = $request->get('level');
+        $kasir->foto = $image_name;
+        $kasir->remember_token = Str::random(60);
+        $kasir->save();
 
         return redirect()->route('kasir.index')
             ->with('success', 'Kasir Berhasil Ditambahkan');;
@@ -87,7 +95,32 @@ class KasirController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $request->validate([
+            'name'      => 'required',
+            'email'     => 'required',
+            'level'     => 'required',
+        ]);
+
+        $kasir = User::find($id);
+
+        if($request->has('fotoprofil')){
+            if($kasir->foto != 'images/user_profile/user.png' && file_exists(storage_path('app/public/'.$kasir->foto))){
+                Storage::delete('public/'.$kasir->foto);
+            }
+            $image_name = $request->file('fotoprofil')->store('images/user_profile', 'public');
+            $kasir->foto = $image_name;
+        }
+
+        $kasir->name = $request->get('name');
+        $kasir->email = $request->get('email');
+        $kasir->level = $request->get('level');
+        if($request->filled('password')){
+            $kasir->password = bcrypt($request->get('password'));
+        }
+        $kasir->save();
+
+        return redirect()->route('kasir.index')
+            ->with('success', 'Kasir berhasil diupdate');
     }
 
     /**
@@ -98,6 +131,8 @@ class KasirController extends Controller
      */
     public function destroy($id)
     {
-        //
+        User::find($id)->delete();
+        return redirect()->route('admin.index')
+            ->with('success', 'Kasir berhasil dihapus');
     }
 }

@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
+use Illuminate\Support\Facades\Storage;
 
 class AlluserController extends Controller
 {
@@ -15,8 +16,8 @@ class AlluserController extends Controller
      */
     public function index()
     {
-        $admin = User::all();
-        return view('alluser.index', compact('admin'));
+        $alluser = User::all();
+        return view('alluser.index', compact('alluser'));
     }
 
     /**
@@ -44,16 +45,23 @@ class AlluserController extends Controller
             'level'     => 'required',
         ]);
 
+        if($request->file('fotoprofil')){
+            $image_name = $request->file('fotoprofil')->store('images/user_profile', 'public');
+        } else {
+            $image_name = 'images/user_profile/user.png';
+        }
+
         $user = new User;
         $user->name = $request->get('name');
         $user->email = $request->get('email');
         $user->password = bcrypt($request->get('password'));
         $user->level = $request->get('level');
+        $user->foto = $image_name;
         $user->remember_token = Str::random(60);
         $user->save();
 
         return redirect()->route('alluser.index')
-            ->with('success', 'All user Berhasil Ditambahkan');;
+            ->with('success', 'User Berhasil Ditambahkan');;
     }
 
     /**
@@ -87,7 +95,32 @@ class AlluserController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $request->validate([
+            'name'      => 'required',
+            'email'     => 'required',
+            'level'     => 'required',
+        ]);
+
+        $alluser = User::find($id);
+
+        if($request->has('fotoprofil')){
+            if($alluser->foto != 'images/user_profile/user.png' && file_exists(storage_path('app/public/'.$alluser->foto))){
+                Storage::delete('public/'.$alluser->foto);
+            }
+            $image_name = $request->file('fotoprofil')->store('images/user_profile', 'public');
+            $alluser->foto = $image_name;
+        }
+
+        $alluser->name = $request->get('name');
+        $alluser->email = $request->get('email');
+        $alluser->level = $request->get('level');
+        if($request->filled('password')){
+            $alluser->password = bcrypt($request->get('password'));
+        }
+        $alluser->save();
+
+        return redirect()->route('alluser.index')
+            ->with('success', 'User berhasil diupdate');
     }
 
     /**
@@ -98,6 +131,8 @@ class AlluserController extends Controller
      */
     public function destroy($id)
     {
-        //
+        User::find($id)->delete();
+        return redirect()->route('alluser.index')
+            ->with('success', 'User berhasil dihapus');
     }
 }

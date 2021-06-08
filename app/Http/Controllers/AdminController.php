@@ -61,7 +61,7 @@ class AdminController extends Controller
         $user->save();
 
         return redirect()->route('admin.index')
-            ->with('success', 'Admin Berhasil Ditambahkan');;
+            ->with('success', 'Admin Berhasil Ditambahkan');
     }
 
     /**
