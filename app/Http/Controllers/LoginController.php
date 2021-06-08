@@ -18,6 +18,8 @@ class LoginController extends Controller
     public function postlogin(Request $request){
         if(Auth::attempt(['email' => $request->email, 'password' => $request->password])){
             return redirect('/');
+        } else {
+            return redirect()->route('login');
         }
     }
 
