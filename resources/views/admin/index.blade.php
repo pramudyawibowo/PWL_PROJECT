@@ -49,6 +49,7 @@
                                     <th>Nama</th>
                                     <th>Email</th>
                                     <th>Level</th>
+                                    <th>Foto</th>
                                     <th>Dibuat</th>
                                     <th>Aksi</th>
                                 </tr>
@@ -60,10 +61,11 @@
                                     <td>{{ $a->name }}</td>
                                     <td>{{ $a->email }}</td>
                                     <td>{{ $a->level }}</td>
+                                    <td><img width="100px" src="{{ asset('storage/'.$a->foto) }}"></td>
                                     <td>{{ $a->created_at }}</td>
                                     <td>
                                         <a href="" class="btn btn-info"><i class="fas fa-info-circle"></i></a>
-                                        <button type="button" data-toggle="modal" id="updateAdmin" data-target="#modal-edit" class="btn btn-success"><i class="fas fa-edit"></i></button>
+                                        <button type="button" data-toggle="modal" id="updateAdmin" data-target="#modal-edit{{$a->id}}" class="btn btn-success"><i class="fas fa-edit"></i></button>
                                         <form action="{{ route('admin.destroy', $a->id) }}" method="POST">
                                             @csrf
                                             @method('DELETE')
@@ -72,6 +74,60 @@
                                         </form>
                                     </td>
                                 </tr>
+                                <div class="modal fade" id="modal-edit{{$a->id}}">
+                                    <div class="modal-dialog">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <h4 class="modal-title" id="modal-judul">Edit data {{ $a->name }}</h4>
+                                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                    <span aria-hidden="true">&times;</span>
+                                                </button>
+                                            </div>
+                                            <div class="modal-body">
+                                                <form action="{{ route ('admin.update', $a->id) }}" method="POST" enctype="multipart/form-data">
+                                                    @csrf
+                                                    @method('PUT')
+                                                    <div class="form-group">
+                                                        <label for="nama">Nama</label>
+                                                        <input type="text" class="form-control" name="name" id="name" value="{{ $a->name }}">
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <label for="email">Email</label>
+                                                        <input type="email" class="form-control" name="email" id="email" value="{{ $a->email }}">
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <label for="password">Password</label>
+                                                        <input type="password" class="form-control" name="password" id="password"
+                                                            placeholder="Masukkan password">
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <label for="level">Level</label>
+                                                        <select class="form-control" name="level" id="name">
+                                                            <option {{ $a->level == 'admin' ? 'selected':'' }} value="admin">Admin</option>
+                                                            <option {{ $a->level == 'teknisi' ? 'selected':'' }} value="teknisi">Teknisi</option>
+                                                            <option {{ $a->level == 'kasir' ? 'selected':'' }} value="kasir">Kasir</option>
+                                                        </select>
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <label for="fotoprofil">Foto Profil</label>
+                                                        <div class="input-group">
+                                                            <div class="custom-file">
+                                                                <input type="file" class="custom-file-input" id="fotoprofil" name="fotoprofil">
+                                                                <label class="custom-file-label" for="fotoprofil">Upload foto profil</label>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                            </div>
+                                            <div class="modal-footer justify-content-between">
+                                                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                                                <button type="submit" class="btn btn-primary">Submit</button>
+                                            </div>
+                                            </form>
+                                        </div>
+                                        <!-- /.modal-content -->
+                                    </div>
+                                    <!-- /.modal-dialog -->
+                                </div>
                                 @endforeach
                             </tbody>
                         </table>
@@ -124,69 +180,11 @@
                         </select>
                     </div>
                     <div class="form-group">
-                        <label for="exampleInputFile">Foto Profil</label>
+                        <label for="fotoprofil">Foto Profil</label>
                         <div class="input-group">
                             <div class="custom-file">
-                                <input type="file" class="custom-file-input" id="exampleInputFile">
-                                <label class="custom-file-label" for="exampleInputFile">Upload foto profil</label>
-                            </div>
-                        </div>
-                    </div>
-            </div>
-            <div class="modal-footer justify-content-between">
-                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                <button type="submit" class="btn btn-primary">Submit</button>
-            </div>
-            </form>
-        </div>
-        <!-- /.modal-content -->
-    </div>
-    <!-- /.modal-dialog -->
-</div>
-<script type="text/javascript">
-$("#updateAdmin").click(function () {
-     $("#modal-judul").html("ASD");
-});
-</script>
-<div class="modal fade" id="modal-edit">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h4 class="modal-title" id="modal-judul"></h4>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div class="modal-body">
-                <form action="" method="POST" enctype="multipart/form-data">
-                    @csrf
-                    <div class="form-group">
-                        <label for="nama">Nama</label>
-                        <input type="text" class="form-control" name="name" id="name" placeholder="Masukkan nama">
-                    </div>
-                    <div class="form-group">
-                        <label for="email">Email</label>
-                        <input type="email" class="form-control" name="email" id="email" placeholder="Masukkan email">
-                    </div>
-                    <div class="form-group">
-                        <label for="password">Password</label>
-                        <input type="password" class="form-control" name="password" id="password"
-                            placeholder="Masukkan password">
-                    </div>
-                    <div class="form-group">
-                        <label for="level">Level</label>
-                        <select class="form-control" name="level" id="name">
-                            <option selected value="admin">Admin</option>
-                            <option value="teknisi">Teknisi</option>
-                            <option value="kasir">Kasir</option>
-                        </select>
-                    </div>
-                    <div class="form-group">
-                        <label for="exampleInputFile">Foto Profil</label>
-                        <div class="input-group">
-                            <div class="custom-file">
-                                <input type="file" class="custom-file-input" id="exampleInputFile">
-                                <label class="custom-file-label" for="exampleInputFile">Upload foto profil</label>
+                                <input type="file" class="custom-file-input" id="fotoprofil" name="fotoprofil">
+                                <label class="custom-file-label" for="fotoprofil">Upload foto profil</label>
                             </div>
                         </div>
                     </div>
