@@ -65,7 +65,7 @@
                                     <td>{{ $a->created_at }}</td>
                                     <td>
                                         <a href="" class="btn btn-info"><i class="fas fa-info-circle"></i></a>
-                                        <button type="button" data-toggle="modal" id="updateAdmin" data-target="#modal-edit{{$a->id}}" class="btn btn-success"><i class="fas fa-edit"></i></button>
+                                        <a data-toggle="modal" id="updateAdmin" data-target="#modal-edit{{$a->id}}" class="btn btn-success"><i class="fas fa-edit"></i></a>
                                         <form action="{{ route('admin.destroy', $a->id) }}" method="POST">
                                             @csrf
                                             @method('DELETE')
