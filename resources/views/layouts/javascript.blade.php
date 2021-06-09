@@ -32,3 +32,17 @@
 <script src="{{ asset('assets/AdminLTE/dist/js/demo.js') }}"></script>
 <!-- AdminLTE dashboard demo (This is only for demo purposes) -->
 <script src="{{ asset('assets/AdminLTE/dist/js/pages/dashboard.js') }}"></script>
+<!-- SweetAlert2 -->
+<script src="{{ asset('assets/AdminLTE/plugins/sweetalert2/sweetalert2.min.js') }}"></script>
+<!-- Toastr -->
+<script src="{{ asset('assets/AdminLTE/plugins/toastr/toastr.min.js') }}"></script>
+<!-- Custom -->
+@if ($message = Session::get('success'))
+<script>
+    $(document).ready(function() {
+      toastr.success('{{ $message }}')
+    });
+</script>
+@endif
+@yield('customjs')
+

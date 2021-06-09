@@ -2,13 +2,6 @@
 @section('title', 'Admin')
 @section('content')
 
-@if ($message = Session::get('success'))
-<script>
-    $('.document').ready(function() {
-      toastr.success('{{ $message }}')
-    });
-</script>
-@endif
 <!-- Main content -->
 <section class="content">
     <div class="container-fluid">
