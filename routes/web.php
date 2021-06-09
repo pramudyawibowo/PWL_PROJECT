@@ -6,6 +6,9 @@ use App\Http\Controllers\KasirController;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\TeknisiController;
 use App\Http\Controllers\AlluserController;
+use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\OrderController;
+use App\Http\Controllers\ReceiptController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -27,17 +30,20 @@ Route::middleware(['auth', 'ceklevel:admin'])->group(function () {
     Route::resource('/teknisi', TeknisiController::class);
     Route::resource('/kasir', KasirController::class);
     Route::resource('/alluser', AlluserController::class);
-
+    Route::resource('/kategori', CategoryController::class);
+    Route::resource('/pesanan', OrderController::class);
 });
 
 
 Route::middleware(['auth', 'ceklevel:teknisi'])->group(function () {
-});
-Route::middleware(['auth', 'ceklevel:kasir'])->group(function () {
-});
-Route::middleware(['auth', 'ceklevel:alluser'])->group(function () {
+    // Route::resource('/pesanan', OrderController::class)->only('index', 'show');
+    Route::resource('/nota', ReceiptController::class);
 });
 
+Route::middleware(['auth', 'ceklevel:admin,kasir'])->group(function () {
+    Route::resource('/pesanan', OrderController::class);
+    Route::resource('/nota', ReceiptController::class)->only('index', 'show');
+});
 
 Route::get('/login', [LoginController::class, 'index'])->name('login');
 Route::post('/postlogin', [LoginController::class, 'postlogin'])->name('postlogin');
