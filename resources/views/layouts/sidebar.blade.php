@@ -81,6 +81,14 @@
                         </li>
                     </ul>
                 </li>
+                <li class="nav-item">
+                    <a href="{{ route('kategori.index') }}" class="nav-link">
+                        <i class="nav-icon fas fa-list"></i>
+                        <p>
+                            Kategori
+                        </p>
+                    </a>
+                </li>
                 @endif
                 @if (auth()->user()->level == "teknisi" || auth()->user()->level == "admin")
                 <li class="nav-header">TEKNISI</li>
@@ -96,7 +104,7 @@
                 @if (auth()->user()->level == "kasir" || auth()->user()->level == "admin")
                 <li class="nav-header">KASIR</li>
                 <li class="nav-item">
-                    <a href="pages/kanban.html" class="nav-link">
+                    <a href="{{ route('pesanan.index') }}" class="nav-link">
                         <i class="nav-icon fas fa-list-alt"></i>
                         <p>
                             Pesanan
