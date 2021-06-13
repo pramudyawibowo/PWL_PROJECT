@@ -21,21 +21,10 @@
                 <div class="card">
                     <div class="card-header">
                         <h3 class="card-title">Data Seluruh Pesanan</h3>
-                        <div class="card-tools">
-                            <div class="input-group input-group-sm" style="width: 150px;">
-                                <input type="text" name="table_search" class="form-control float-right"
-                                    placeholder="Search">
-                                <div class="input-group-append">
-                                    <button type="submit" class="btn btn-default">
-                                        <i class="fas fa-search"></i>
-                                    </button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+                      </div>
                     <!-- /.card-header -->
-                    <div class="card-body table-responsive p-0">
-                        <table class="table table-hover text-nowrap">
+                    <div class="card-body">
+                        <table class="table table-bordered table-stripped" id="example1">
                             <thead>
                                 <tr>
                                     <th>No.</th>
@@ -57,7 +46,8 @@
                                     <td>{{ $p->keluhan}}</td>
                                     <td>{{ $p->created_at }}</td>
                                     <td>
-                                        <a href="" class="btn btn-info"><i class="fas fa-info-circle"></i></a>
+                                        <a data-toggle="modal" data-target="#modal-info{{$p->id}}"
+                                            class="btn btn-info"><i class="fas fa-info-circle"></i></a>
                                         <a data-toggle="modal" id="updateAdmin" data-target="#modal-edit{{$p->id}}" class="btn btn-success"><i class="fas fa-edit"></i></a>
                                         <form action="{{ route('pesanan.destroy', $p->id) }}" method="POST">
                                             @csrf
@@ -118,6 +108,59 @@
                                                 <button type="submit" class="btn btn-primary">Submit</button>
                                             </div>
                                             </form>
+                                        </div>
+                                        <!-- /.modal-content -->
+                                    </div>
+                                    <!-- /.modal-dialog -->
+                                </div>
+                                <div class="modal fade" id="modal-info{{$p->id}}">
+                                    <div class="modal-dialog">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <h4 class="modal-title" id="modal-judul">Detail {{ $p->nama_pesanan }}</h4>
+                                                <button type="button" class="close" data-dismiss="modal"
+                                                    aria-label="Close">
+                                                    <span aria-hidden="true">&times;</span>
+                                                </button>
+                                            </div>
+                                            <div class="modal-body">
+                                                <div class="form-group">
+                                                    <label for="nama_pesanan">Nama Pesanan</label>
+                                                    <p>{{ $p->nama_pesanan }}</p>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label for="nama_pelanggan">Nama Pelanggan</label>
+                                                    <p>{{ $p->nama_pelanggan }}</p>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label for="alamat_pelanggan">Alamat Pelanggan</label>
+                                                    <p>{{ $p->alamat_pelanggan }}</p>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label for="no_hp_pelanggan">No. HP Pelanggan</label>
+                                                    <p>{{ $p->no_hp_pelanggan }}</p>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label for="nama_barang">Nama Barang</label>
+                                                    <p>{{ $p->nama_barang }}</p>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label for="nama_kategori">Kategori</label>
+                                                    <p>{{ $p->kategori->nama_kategori }}</p>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label for="keluhan">Keluhan</label>
+                                                    <p>{{ $p->keluhan }}</p>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label for="dibuat">Dipesan pada</label><br>
+                                                    <p>{{ $p->created_at }}</p>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label for="diupdate">Terakhir update</label><br>
+                                                    <p>{{ $p->updated_at }}</p>
+                                                </div>
+                                            </div>
                                         </div>
                                         <!-- /.modal-content -->
                                     </div>
