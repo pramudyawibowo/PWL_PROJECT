@@ -57,7 +57,8 @@
                                     <td><img width="100px" src="{{ asset('storage/'.$a->foto) }}"></td>
                                     <td>{{ $a->created_at }}</td>
                                     <td>
-                                        <a href="" class="btn btn-info"><i class="fas fa-info-circle"></i></a>
+                                        <a data-toggle="modal" id="infoKasir" data-target="#modal-info{{$a->id}}"
+                                            class="btn btn-info"><i class="fas fa-info-circle"></i></a>
                                         <a data-toggle="modal" id="updatekasir" data-target="#modal-edit{{$a->id}}" class="btn btn-success"><i class="fas fa-edit"></i></a>
                                         <form action="{{ route('kasir.destroy', $a->id) }}" method="POST">
                                             @csrf
@@ -116,6 +117,47 @@
                                                 <button type="submit" class="btn btn-primary">Submit</button>
                                             </div>
                                             </form>
+                                        </div>
+                                        <!-- /.modal-content -->
+                                    </div>
+                                    <!-- /.modal-dialog -->
+                                </div>
+                                <div class="modal fade" id="modal-info{{$a->id}}">
+                                    <div class="modal-dialog">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <h4 class="modal-title" id="modal-judul">Detail {{ $a->name }}</h4>
+                                                <button type="button" class="close" data-dismiss="modal"
+                                                    aria-label="Close">
+                                                    <span aria-hidden="true">&times;</span>
+                                                </button>
+                                            </div>
+                                            <div class="modal-body">
+                                                <div class="form-group">
+                                                    <label for="nama">Nama</label>
+                                                    <p>{{ $a->name }}</p>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label for="email">Email</label>
+                                                    <p>{{ $a->email }}</p>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label for="level">Level</label>
+                                                    <p>{{ $a->level }}</p>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label for="fotoprofil">Foto Profil</label><br>
+                                                    <img width="150px" src="{{ asset('storage/'.$a->foto )}}">
+                                                </div>
+                                                <div class="form-group">
+                                                    <label for="dibuat">Dibuat pada</label><br>
+                                                    <p>{{ $a->created_at }}</p>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label for="diupdate">Terakhir update</label><br>
+                                                    <p>{{ $a->updated_at }}</p>
+                                                </div>
+                                            </div>
                                         </div>
                                         <!-- /.modal-content -->
                                     </div>
