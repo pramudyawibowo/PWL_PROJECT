@@ -31,18 +31,19 @@ Route::middleware(['auth', 'ceklevel:admin'])->group(function () {
     Route::resource('/kasir', KasirController::class);
     Route::resource('/alluser', AlluserController::class);
     Route::resource('/kategori', CategoryController::class);
+});
+
+Route::middleware(['auth', 'ceklevel:admin,kasir,teknisi'])->group(function () {
     Route::resource('/pesanan', OrderController::class);
 });
 
-
-Route::middleware(['auth', 'ceklevel:teknisi'])->group(function () {
-    // Route::resource('/pesanan', OrderController::class)->only('index', 'show');
+Route::middleware(['auth', 'ceklevel:admin,teknisi'])->group(function () {
+    Route::get('/pesanan/fix/{id}', [OrderController::class, 'fix'])->name('pesanan.fix');
     Route::resource('/nota', ReceiptController::class);
 });
 
 Route::middleware(['auth', 'ceklevel:admin,kasir'])->group(function () {
-    Route::resource('/pesanan', OrderController::class);
-    Route::resource('/nota', ReceiptController::class)->only('index', 'show');
+    Route::resource('/nota', ReceiptController::class)->only('index');
 });
 
 Route::get('/login', [LoginController::class, 'index'])->name('login');
