@@ -93,7 +93,7 @@
                 @if (auth()->user()->level == "teknisi" || auth()->user()->level == "admin")
                 <li class="nav-header">TEKNISI</li>
                 <li class="nav-item">
-                    <a href="pages/calendar.html" class="nav-link">
+                    <a href="{{{ route('pesanan.index')}}}" class="nav-link">
                         <i class="nav-icon far fa-cogs"></i>
                         <p>
                             Perbaikan
@@ -105,7 +105,7 @@
                 <li class="nav-header">KASIR</li>
                 <li class="nav-item">
                     <a href="{{ route('pesanan.index') }}" class="nav-link">
-                        <i class="nav-icon fas fa-list-alt"></i>
+                        <i class="nav-icon fas fa-shopping-cart"></i>
                         <p>
                             Pesanan
                         </p>
