@@ -46,6 +46,7 @@ class OrderController extends Controller
             'nama_barang',
             'id_kategori',
             'keluhan',
+            'status',
         ]);
 
         Order::create($request->all());
@@ -120,5 +121,14 @@ class OrderController extends Controller
         Order::find($id)->delete();
         return redirect()->route('pesanan.index')
             ->with('success', 'Pesanan berhasil dihapus');
+    }
+
+    public function fix($id)
+    {
+        $pesanan = Order::find($id);
+        $pesanan->status = 'diproses';
+        $pesanan->save();
+        return redirect()->route('pesanan.index')
+            ->with('success', 'Pesanan diperbaiki');
     }
 }

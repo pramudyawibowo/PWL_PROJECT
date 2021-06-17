@@ -17,6 +17,7 @@ class Order extends Model
         'nama_barang',
         'id_kategori',
         'keluhan',
+        'status'
     ];
 
     public function kategori(){
