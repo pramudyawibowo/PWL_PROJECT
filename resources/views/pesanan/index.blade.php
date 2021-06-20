@@ -54,18 +54,21 @@
                                     <td>
                                         <a data-toggle="modal" data-target="#modal-info{{$p->id}}"
                                             class="btn btn-info"><i class="fas fa-info-circle"></i></a>
-                                        @if (auth()->user()->level == 'teknisi' && $p->status == 'diproses')
+
+                                        @if ((auth()->user()->level == 'admin' || auth()->user()->level == 'teknisi') &&
+                                        $p->status == 'dipesan')
+                                        <a class="btn btn-warning" href="{{ route('pesanan.fix', $p->id) }}"><i class="fas fa-tools"
+                                            style="color: white"></i></a>
+                                        @endif
+
+                                        @if ((auth()->user()->level == 'admin' || auth()->user()->level == 'teknisi') &&
+                                        $p->status == 'diproses')
                                         <a data-toggle="modal" data-target="#modal-nota{{$p->id}}"
                                             class="btn btn-success"><i class="fas fa-check"></i></a>
                                         @endif
-                                        @if (auth()->user()->level == 'teknisi' && $p->status == 'dipesan')
-                                        <form action="{{ route('pesanan.fix', $p->id) }}" method="GET">
-                                            @csrf
-                                            <button type="submit" class="btn btn-warning"><i class="fas fa-tools"
-                                                    style="color: white"></i></button>
-                                        </form>
-                                        @endif
-                                        @if (auth()->user()->level == 'admin' || auth()->user()->level == 'kasir')
+
+                                        @if ((auth()->user()->level == 'admin' || auth()->user()->level == 'kasir') &&
+                                        $p->status == 'dipesan')
                                         <a data-toggle="modal" id="updateAdmin" data-target="#modal-edit{{$p->id}}"
                                             class="btn btn-success"><i class="fas fa-edit"></i></a>
                                         <form action="{{ route('pesanan.destroy', $p->id) }}" method="POST">
@@ -74,6 +77,11 @@
                                             <button type="submit" class="btn btn-danger"><i
                                                     class="fas fa-trash"></i></button>
                                         </form>
+                                        @endif
+                                        @if ((auth()->user()->level == 'admin' || auth()->user()->level == 'kasir') &&
+                                        $p->status == 'selesai')
+                                        <a href={{ route('nota.cetak', $p->id) }} class="btn btn-default"><i
+                                                class="fas fa-print"></i></a>
                                         @endif
                                     </td>
                                 </tr>
