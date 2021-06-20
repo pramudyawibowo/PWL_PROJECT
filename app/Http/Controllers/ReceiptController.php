@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Order;
 use App\Models\Receipt;
 use Illuminate\Http\Request;
 
@@ -43,8 +44,11 @@ class ReceiptController extends Controller
         ]);
 
         Receipt::create($request->all());
+        $pesanan = Order::find($request->get('id_pesanan'));
+        $pesanan->status = 'selesai';
+        $pesanan->save();
 
-        return redirect()->route('nota.index')
+        return redirect()->route('pesanan.index')
             ->with('success', 'Nota berhasil ditambahkan');
     }
 
@@ -91,7 +95,7 @@ class ReceiptController extends Controller
         $nota->harga = $request->get('harga');
         $nota->save();
 
-        return redirect()->route('nota.index')
+        return redirect()->route('pesanan.index')
             ->with('success', 'Nota berhasil diupdate');
     }
 
@@ -106,5 +110,10 @@ class ReceiptController extends Controller
         Receipt::find($id)->delete();
         return redirect()->route('nota.index')
             ->with('success', 'Nota berhasil dihapus');
+    }
+
+    public function cetakNota($id){
+        $nota = Receipt::where('id_pesanan', $id)->with('pesanan')->first();
+        return view('nota.index', compact('nota'));
     }
 }

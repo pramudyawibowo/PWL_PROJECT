@@ -119,7 +119,8 @@ class AdminController extends Controller
         }
         $admin->save();
 
-        return redirect()->route('admin.index');
+        return redirect()->route('admin.index')
+            ->with('success', 'Data Admin berhasil diupdate');
     }
 
     /**

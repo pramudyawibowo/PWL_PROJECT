@@ -19,7 +19,7 @@ class CreateReceiptsTable extends Migration
             $table->string('diagnosa');
             $table->integer('harga');
             $table->timestamps();
-            $table->foreign('id_pesanan')->references('id')->on('orders');
+            $table->foreign('id_pesanan')->references('id')->on('orders')->onDelete('cascade')->onUpdate('cascade');
         });
     }
 
