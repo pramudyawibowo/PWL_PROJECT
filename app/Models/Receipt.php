@@ -16,6 +16,6 @@ class Receipt extends Model
     ];
 
     public function pesanan(){
-        return $this->belongsTo(Order::class);
+        return $this->belongsTo(Order::class, 'id_pesanan', 'id');
     }
 }
