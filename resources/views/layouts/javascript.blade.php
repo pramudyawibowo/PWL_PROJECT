@@ -49,7 +49,13 @@
     });
 </script>
 @endif
-
+@if ($message = Session::get('error'))
+<script>
+    $(document).ready(function() {
+      toastr.error('{{ $message }}')
+    });
+</script>
+@endif
 <script>
     $(function () {
       $("#example1").DataTable({

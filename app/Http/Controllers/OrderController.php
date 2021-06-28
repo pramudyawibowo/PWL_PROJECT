@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Category;
 use App\Models\Order;
+use App\Models\Receipt;
 use Illuminate\Http\Request;
 
 class OrderController extends Controller
@@ -17,7 +18,8 @@ class OrderController extends Controller
     {
         $pesanan = Order::all();
         $kategori = Category::all();
-        return view('pesanan.index', compact('pesanan', 'kategori'));
+        $nota = Receipt::all();
+        return view('pesanan.index', compact('pesanan', 'kategori', 'nota'));
     }
 
     /**
@@ -39,7 +41,6 @@ class OrderController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'nama_pesanan',
             'nama_pelanggan',
             'alamat_pelanggan',
             'no_hp_pelanggan',
@@ -49,7 +50,19 @@ class OrderController extends Controller
             'status',
         ]);
 
-        Order::create($request->all());
+        $jumlahpesanan = Order::max('id');
+        $kategori = Category::find($request->get('id_kategori'));
+
+        $pesanan = new Order;
+        $pesanan->nama_pesanan = (substr($kategori->nama_kategori, 0, 1)) . sprintf("%05d", $jumlahpesanan+1);
+        $pesanan->nama_pelanggan = $request->get('nama_pelanggan');
+        $pesanan->alamat_pelanggan = $request->get('alamat_pelanggan');
+        $pesanan->no_hp_pelanggan = $request->get('no_hp_pelanggan');
+        $pesanan->nama_barang = $request->get('nama_barang');
+        $pesanan->id_kategori = $request->get('id_kategori');
+        $pesanan->keluhan = $request->get('keluhan');
+        $pesanan->status = $request->get('status');
+        $pesanan->save();
 
         return redirect()->route('pesanan.index')
             ->with('success', 'Data pesanan berhasil ditambahkan');

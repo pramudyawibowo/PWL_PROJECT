@@ -80,8 +80,13 @@
                                         @endif
                                         @if ((auth()->user()->level == 'admin' || auth()->user()->level == 'kasir') &&
                                         $p->status == 'selesai')
-                                        <a href={{ route('nota.cetak', $p->id) }} class="btn btn-default"><i
-                                                class="fas fa-print"></i></a>
+                                        <a data-toggle="modal" id="pelunasan" data-target="#modal-pelunasan{{ $p->id }}"
+                                            class="btn btn-success"><i class="fas fa-money-bill-wave-alt"></i></a>
+                                        @endif
+                                        @if ((auth()->user()->level == 'admin' || auth()->user()->level == 'kasir') &&
+                                        $p->status == 'lunas')
+                                         <a href="{{ route('nota.cetak', $p->id) }}" class="btn btn-default"><i
+                                            class="fas fa-print"></i></a>
                                         @endif
                                     </td>
                                 </tr>
@@ -259,6 +264,62 @@
                                     </div>
                                     <!-- /.modal-dialog -->
                                 </div>
+                                <div class="modal fade" id="modal-pelunasan{{ $p->id }}">
+                                    <div class="modal-dialog">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <h4 class="modal-title">Pembayaran
+                                                    {{ $p->nama_pelanggan }}</h4>
+                                                <button type="button" class="close" data-dismiss="modal"
+                                                    aria-label="Close">
+                                                    <span aria-hidden="true">&times;</span>
+                                                </button>
+                                            </div>
+                                            <div class="modal-body">
+                                                <form action="{{ route('nota.pelunasan', $p->id) }}" method="POST"
+                                                    enctype="multipart/form-data">
+                                                    @csrf
+                                                    <div class="form-group">
+                                                        <label for="id_pesanan">Id Pesanan</label>
+                                                        <input type="text" readonly class="form-control"
+                                                            name="id_pesanan" id="id_pesanan" value="{{ $p->id }}">
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <label for="nama_pelanggan">Nama Pelanggan</label>
+                                                        <p>{{ $p->nama_pelanggan }}</p>
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <label for="harga">Harga Total</label>
+                                                        <div class="input-group">
+                                                            <div class="input-group-prepend">
+                                                                <span class="input-group-text">Rp</span>
+                                                            </div>
+                                                            <input readonly type="text" class="form-control" name="harga"
+                                                                id="harga" value="{{ number_format($p->nota->harga, 0, ',', '.') }}">
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <label for="nominal">Nominal Pembayaran</label>
+                                                        <div class="input-group">
+                                                            <div class="input-group-prepend">
+                                                                <span class="input-group-text">Rp</span>
+                                                            </div>
+                                                            <input type="text" class="form-control" name="nominal"
+                                                                id="nominal" placeholder="Input Nominal Pembayaran">
+                                                        </div>
+                                                    </div>
+                                            </div>
+                                            <div class="modal-footer justify-content-between">
+                                                <button type="button" class="btn btn-default"
+                                                    data-dismiss="modal">Close</button>
+                                                <button type="submit" class="btn btn-primary">Submit</button>
+                                            </div>
+                                            </form>
+                                        </div>
+                                        <!-- /.modal-content -->
+                                    </div>
+                                    <!-- /.modal-dialog -->
+                                </div>
                                 @endforeach
                             </tbody>
                         </table>
@@ -291,11 +352,6 @@
             <div class="modal-body">
                 <form action="{{ route('pesanan.store') }}" method="POST" enctype="multipart/form-data">
                     @csrf
-                    <div class="form-group">
-                        <label for="nama_pesanan">Nama Pesanan</label>
-                        <input type="text" class="form-control" name="nama_pesanan" id="nama_pesanan"
-                            placeholder="Masukkan Nama Pesanan">
-                    </div>
                     <div class="form-group">
                         <label for="nama_pelanggan">Nama Pelanggan</label>
                         <input type="text" class="form-control" name="nama_pelanggan" id="nama_pelanggan"

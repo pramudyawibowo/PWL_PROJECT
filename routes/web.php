@@ -44,6 +44,7 @@ Route::middleware(['auth', 'ceklevel:admin,teknisi'])->group(function () {
 
 Route::middleware(['auth', 'ceklevel:admin,kasir'])->group(function () {
     Route::get('/nota/cetak/{id}', [ReceiptController::class, 'cetakNota'])->name('nota.cetak');
+    Route::post('/nota/pelunasan/{id}', [ReceiptController::class, 'pelunasan'])->name('nota.pelunasan');
 });
 
 Route::get('/login', [LoginController::class, 'index'])->name('login');

@@ -43,7 +43,13 @@ class ReceiptController extends Controller
             'harga',
         ]);
 
-        Receipt::create($request->all());
+        $nota = new Receipt;
+        $nota->id_pesanan = $request->get('id_pesanan');
+        $nota->diagnosa = $request->get('diagnosa');
+        $nota->harga = $request->get('harga');
+        $nota->nominal = 0;
+        $nota->kembalian = 0;
+        $nota->save();
         $pesanan = Order::find($request->get('id_pesanan'));
         $pesanan->status = 'selesai';
         $pesanan->save();
@@ -115,5 +121,31 @@ class ReceiptController extends Controller
     public function cetakNota($id){
         $nota = Receipt::where('id_pesanan', $id)->with('pesanan')->first();
         return view('nota.index', compact('nota'));
+    }
+
+    public function pelunasan(Request $request, $id){
+
+        $request->validate([
+            'id_pesanan',
+            'nominal',
+        ]);
+
+        $nota = Receipt::where('id_pesanan', $id)->first();
+
+        if($request->get('nominal') < $nota->harga){
+            return redirect()->route('pesanan.index')
+                ->with('error', 'Nominal lebih kecil dari harga total!');
+        } else {
+            $nota->nominal = $request->get('nominal');
+            $kembali = $request->nominal - $nota->harga;
+            $nota->kembalian = $kembali;
+            $nota->save();
+            $pesanan = Order::find($request->get('id_pesanan'));
+            $pesanan->status = 'lunas';
+            $pesanan->save();
+
+            return redirect()->route('pesanan.index')
+                ->with('success', 'Pesanan berhasil dilunasi, kembalian sebesar Rp' . $kembali);
+        }
     }
 }

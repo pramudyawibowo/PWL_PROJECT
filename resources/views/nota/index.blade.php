@@ -157,6 +157,14 @@
 					<td></td>
 
 					<td>Total: Rp{{ number_format($nota->harga,0,',','.') }}</td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td>Pembayaran: Rp{{ number_format($nota->nominal,0,',','.') }}</td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td>Kembali: Rp{{ number_format($nota->kembali,0,',','.') }}</td>
 				</tr>
 			</table>
 		</div>

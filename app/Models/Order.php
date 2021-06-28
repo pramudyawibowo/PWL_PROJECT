@@ -25,6 +25,6 @@ class Order extends Model
     }
 
     public function nota(){
-        return $this->hasOne(Receipt::class);
+        return $this->hasOne(Receipt::class, 'id_pesanan', 'id');
     }
 }
