@@ -39,7 +39,7 @@ Route::middleware(['auth', 'ceklevel:admin,kasir,teknisi'])->group(function () {
 });
 
 Route::middleware(['auth', 'ceklevel:admin,teknisi'])->group(function () {
-    Route::get('/pesanan/fix/{id}', [OrderController::class, 'fix'])->name('pesanan.fix');
+    Route::post('/pesanan/fix/{id}', [OrderController::class, 'fix'])->name('pesanan.fix');
 });
 
 Route::middleware(['auth', 'ceklevel:admin,kasir'])->group(function () {

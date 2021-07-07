@@ -57,7 +57,7 @@
 
                                         @if ((auth()->user()->level == 'admin' || auth()->user()->level == 'teknisi') &&
                                         $p->status == 'dipesan')
-                                        <a class="btn btn-warning" href="{{ route('pesanan.fix', $p->id) }}"><i class="fas fa-tools"
+                                        <a class="btn btn-warning" data-toggle="modal" data-target="#modal-fix{{ $p->id }}"><i class="fas fa-tools"
                                             style="color: white"></i></a>
                                         @endif
 
@@ -241,7 +241,6 @@
                                                         <textarea class="form-control" name="diagnosa" id="diagnosa"
                                                             placeholder="Masukkan hasil diagnosa"></textarea>
                                                     </div>
-
                                                     <div class="form-group">
                                                         <label for="harga">Harga Total</label>
                                                         <div class="input-group">
@@ -251,6 +250,47 @@
                                                             <input type="text" class="form-control" name="harga"
                                                                 id="harga" placeholder="Masukkan Harga Total">
                                                         </div>
+                                                    </div>
+                                            </div>
+                                            <div class="modal-footer justify-content-between">
+                                                <button type="button" class="btn btn-default"
+                                                    data-dismiss="modal">Close</button>
+                                                <button type="submit" class="btn btn-primary">Submit</button>
+                                            </div>
+                                            </form>
+                                        </div>
+                                        <!-- /.modal-content -->
+                                    </div>
+                                    <!-- /.modal-dialog -->
+                                </div>
+                                <div class="modal fade" id="modal-fix{{ $p->id }}">
+                                    <div class="modal-dialog">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <h4 class="modal-title">Konfirmasi Perbaikan
+                                                    {{ $p->nama_pesanan }}</h4>
+                                                <button type="button" class="close" data-dismiss="modal"
+                                                    aria-label="Close">
+                                                    <span aria-hidden="true">&times;</span>
+                                                </button>
+                                            </div>
+                                            <div class="modal-body">
+                                                <form action="{{ route('pesanan.fix', $p->id) }}" method="POST"
+                                                    enctype="multipart/form-data">
+                                                    @csrf
+                                                    <div class="form-group">
+                                                        <label for="id_pesanan">Id Pesanan</label>
+                                                        <input type="text" readonly class="form-control"
+                                                            name="id_pesanan" id="id_pesanan" value="{{ $p->id }}">
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <label for="nama_pelanggan">Nama Pelanggan</label>
+                                                        <p>{{ $p->nama_pelanggan }}</p>
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <label for="estimasi_selesai">Estimasi Penyelesaian</label>
+                                                            <input type="datetime-local" min="{{ date('Y-m-d') }}T{{ date('H:i') }}" max="{{ date('Y-m-d', strtotime('+1 Week')) }}T{{ date('H:i') }}" value="{{ date('Y-m-d', strtotime('+3 Days')) }}T{{ date('H:i') }}" class="form-control" name="estimasi_selesai"
+                                                                id="estimasi_selesai" placeholder="Masukkan Harga Total">
                                                     </div>
                                             </div>
                                             <div class="modal-footer justify-content-between">
@@ -288,6 +328,7 @@
                                                         <label for="nama_pelanggan">Nama Pelanggan</label>
                                                         <p>{{ $p->nama_pelanggan }}</p>
                                                     </div>
+                                                    @if ($p->status == 'selesai')
                                                     <div class="form-group">
                                                         <label for="harga">Harga Total</label>
                                                         <div class="input-group">
@@ -298,6 +339,7 @@
                                                                 id="harga" value="{{ number_format($p->nota->harga, 0, ',', '.') }}">
                                                         </div>
                                                     </div>
+                                                    @endif
                                                     <div class="form-group">
                                                         <label for="nominal">Nominal Pembayaran</label>
                                                         <div class="input-group">

@@ -136,9 +136,13 @@ class OrderController extends Controller
             ->with('success', 'Pesanan berhasil dihapus');
     }
 
-    public function fix($id)
+    public function fix(Request $request, $id)
     {
+        $request->validate([
+            'estimasi_selesai',
+        ]);
         $pesanan = Order::find($id);
+        $pesanan->estimasi_selesai = $request->get('estimasi_selesai');
         $pesanan->status = 'diproses';
         $pesanan->save();
         return redirect()->route('pesanan.index')

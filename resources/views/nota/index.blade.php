@@ -2,7 +2,7 @@
 <html>
 	<head>
 		<meta charset="utf-8" />
-		<title>Nota Filosofi Service</title>
+		<title>{{ $nota->pesanan->nama_pesanan }}</title>
 
 		<style>
 			.invoice-box {
@@ -144,7 +144,7 @@
 				</tr>
 
 				<tr class="item">
-					<td>{{ $nota->pesanan->nama_pesanan }} {{ $nota->pesanan->nama_barang }} {{ $nota->pesanan->keluhan }}</td>
+					<td>{{ $nota->pesanan->nama_barang }} {{ $nota->pesanan->keluhan }}</td>
 				</tr>
 
 				<tr class="item">
@@ -164,7 +164,7 @@
                 </tr>
                 <tr>
                     <td></td>
-                    <td>Kembali: Rp{{ number_format($nota->kembali,0,',','.') }}</td>
+                    <td>Kembali: Rp{{ number_format($nota->kembalian,0,',','.') }}</td>
 				</tr>
 			</table>
 		</div>
